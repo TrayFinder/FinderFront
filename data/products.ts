@@ -1,20 +1,20 @@
 export type Product = {
-  id: number
-  name: string
-  originalPrice: string
-  price: string
-  image: string
-  categoryId: string
-  featured?: boolean
-  description?: string
-  brand?: string
-  weight?: string
-  rating?: number
-  reviews?: number
-  items?: number
-  longDescription?: string
-  packagingInfo?: string
-}
+  id: number;
+  barcode: string;
+  product_name: string;
+  description: string | null;
+  category: string;
+  subcategory: string;
+  filename: string;
+  price: number;
+  sale_price: number;
+  sale_percentage: number;
+  on_sale: boolean;
+  stock: number;
+  embeddings: string | null;
+  created_at: string;
+  updated_at: string;
+};
 
 export const categories = [
   { id: "groceries", name: "Mercearia" },
