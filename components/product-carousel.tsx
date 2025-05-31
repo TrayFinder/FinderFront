@@ -20,7 +20,6 @@ export default function ProductCarousel({ products, title }: ProductCarouselProp
   const containerRef = useRef<HTMLDivElement>(null)
   const [itemsPerView, setItemsPerView] = useState(5)
 
-  // Determine items per view based on screen size
   useEffect(() => {
     const updateItemsPerView = () => {
       if (window.innerWidth < 640) {
@@ -125,7 +124,7 @@ export default function ProductCarousel({ products, title }: ProductCarouselProp
                       >
                         <Minus className="h-4 w-4" />
                       </button>
-                      <span className="px-2 text-sm">{quantities[product.id]}</span>
+                      <span className="px-2 text-sm">{quantities[product.id] ? quantities[product.id] : 1}</span>
                       <button
                         onClick={() => updateQuantity(product.id, 1)}
                         className="p-1 text-gray-500 hover:text-gray-700"

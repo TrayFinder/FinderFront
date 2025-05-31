@@ -2,20 +2,33 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
-import { useParams } from "next/navigation"
+import Footer from "@/components/footer"
+import Header from "@/components/header"
+import ProductCarousel from "@/components/product-carousel"
+import StarRating from "@/components/star-rating"
+import { Product, loadProducts } from "@/data/products"
+import { Minus, Plus, ShoppingCart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Minus, Plus, ShoppingCart } from "lucide-react"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import StarRating from "@/components/star-rating"
-import ProductCarousel from "@/components/product-carousel"
-import { products } from "@/data/products"
+import { useParams } from "next/navigation"
+import { useEffect, useRef, useState } from "react"
+
 
 export default function ProductPage() {
   const params = useParams()
   const productId = Number(params.id)
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+      async function fetchData() {
+        try {
+          const data = await loadProducts();
+          setProducts(data);
+        } catch (err) {
+          console.error("Erro ao carregar produtos", err);
+        }
+      }
+      fetchData();
+    }, []);
   const product = products.find((p) => p.id === productId)
 
   const [quantity, setQuantity] = useState(1)
@@ -26,7 +39,6 @@ export default function ProductPage() {
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 })
   const imageContainerRef = useRef<HTMLDivElement>(null)
 
-  // Get related products (same category)
   const relatedProducts = products.filter((p) => p.categoryId === product?.categoryId && p.id !== productId).slice(0, 5)
 
   if (!product) {

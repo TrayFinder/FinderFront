@@ -10,7 +10,6 @@ export default function BrandsCarousel() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [itemsPerView, setItemsPerView] = useState(5)
 
-  // Determine items per view based on screen size
   useEffect(() => {
     const updateItemsPerView = () => {
       if (window.innerWidth < 640) {
@@ -36,7 +35,6 @@ export default function BrandsCarousel() {
     interval: 3000,
   })
 
-  // Calculate the translation for the carousel
   const translateX = `-${currentIndex * (100 / itemsPerView)}%`
 
   return (

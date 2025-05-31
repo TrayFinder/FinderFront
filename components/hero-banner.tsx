@@ -3,7 +3,6 @@ import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useCarousel } from "@/hooks/use-carousel"
 
-// Define banner images
 const bannerImages = [
   "/banner1.svg?height=400&width=1200&text=Banner+1",
   "/banner2.svg?height=400&width=1200&text=Banner+2",

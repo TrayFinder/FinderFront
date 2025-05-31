@@ -39,7 +39,6 @@ export default function CategoryDropdown({ categories, selectedCategories, onCat
     }
   }, [])
 
-  // Category icons mapping (you can replace these with actual icons)
   const categoryIcons: Record<string, string> = {
     groceries: "🥫",
     beverages: "🥤",
