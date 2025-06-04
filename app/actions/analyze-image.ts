@@ -12,10 +12,11 @@ export async function analyzeImage(formData: FormData) {
       message: "No image provided",
     }
   }
-  console.log("data",imageFile)
+  const correctedFormData = new FormData()
+  correctedFormData.append("file", imageFile)
 
   try {
-    const response = await api.post("/upload-image", formData, {
+    const response = await api.post("/products/predict", correctedFormData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
