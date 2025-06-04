@@ -43,7 +43,6 @@ export default function HeroBanner() {
         ))}
       </div>
 
-      {/* Navigation arrows */}
       <button
         onClick={prev}
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 rounded-full hover:bg-white/30 transition-colors z-20"
@@ -59,7 +58,6 @@ export default function HeroBanner() {
         <ChevronRight className="h-6 w-6 text-white" />
       </button>
 
-      {/* Pagination dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
         {bannerImages.map((_, index) => (
           <button

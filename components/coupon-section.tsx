@@ -8,7 +8,7 @@ export default function CouponSection() {
   const [isCopied, setIsCopied] = useState(false)
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText("SUPER10")
+    navigator.clipboard.writeText("FINDER10")
     setIsCopied(true)
     setTimeout(() => setIsCopied(false), 2000)
   }
@@ -30,7 +30,7 @@ export default function CouponSection() {
             isHovered ? "bg-white/10 scale-110" : ""
           }`}
         >
-          <span className="text-2xl font-bold tracking-wider">SUPER10</span>
+          <span className="text-2xl font-bold tracking-wider">FINDER10</span>
         </div>
         {isCopied && (
           <div className="absolute bottom-4 bg-green-600 text-white py-2 px-4 rounded-md animate-fade-in">

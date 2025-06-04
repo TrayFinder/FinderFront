@@ -1,12 +1,12 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
+import StarRating from "@/components/star-rating"
+import type { Product } from "@/data/products"
+import { useCarousel } from "@/hooks/use-carousel"
+import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart } from "lucide-react"
-import { useCarousel } from "@/hooks/use-carousel"
-import type { Product } from "@/data/products"
-import StarRating from "@/components/star-rating"
+import { useEffect, useRef, useState } from "react"
 
 interface ProductCarouselProps {
   products: Product[]
@@ -53,13 +53,10 @@ export default function ProductCarousel({ products, title }: ProductCarouselProp
   }
 
   const handleBuyClick = () => {
-    // Add to cart logic would go here
   }
 
-  // Calculate the translation for the carousel
   const translateX = `-${currentIndex * (100 / itemsPerView)}%`
 
-  // If no products, show a message
   if (products.length === 0) {
     return (
       <div className="bg-white rounded-md shadow-sm border p-8 text-center">

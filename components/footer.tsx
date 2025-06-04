@@ -7,7 +7,6 @@ export default function Footer() {
     <footer className="bg-gray-50 pt-12 pb-6 border-t">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo and info */}
           <div className="col-span-1">
             <Link href="/">
               <Image
@@ -60,7 +59,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Institutional */}
           <div className="col-span-1">
             <h3 className="font-bold text-lg mb-4">Institucional</h3>
             <ul className="space-y-2">
@@ -92,7 +90,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
           <div className="col-span-1">
             <h3 className="font-bold text-lg mb-4">Categorias</h3>
             <ul className="space-y-2">

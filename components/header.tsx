@@ -69,11 +69,10 @@ export default function Header() {
     setSearchResults(null)
 
     try {
-      // Create FormData to send to the server action
+
       const formData = new FormData()
       formData.append("image", imageFile)
 
-      // Call the server action to analyze the image
       const response = await analyzeImage(formData)
 
       if (response.success) {
@@ -105,15 +104,13 @@ export default function Header() {
 
   return (
     <>
-      {/* Top blue notification bar */}
       <div className="bg-blue-900 text-white text-center py-2 text-sm">
         FRETE GRÁTIS para compras acima de R$ 299. Aproveite!
       </div>
 
-      {/* Header */}
       <header className="bg-white py-4 px-4 md:px-8 flex items-center justify-between border-b">
         <div className="flex items-center space-x-6">
-          {/* Logo */}
+
           <div className="flex items-center">
             <Link href="/">
               <Image
@@ -126,7 +123,6 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Categories dropdown */}
           <CategoryDropdown
             categories={categories}
             selectedCategories={selectedCategories}
@@ -134,7 +130,6 @@ export default function Header() {
           />
         </div>
 
-        {/* Search bar */}
         <div className="flex-1 max-w-xl mx-4">
           <div className="relative flex h-10">
             <input
@@ -160,7 +155,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* User actions */}
         <div className="flex items-center space-x-4">
           <button className="flex items-center text-sm">
             <ShoppingCart className="h-5 w-5 mr-1" />
@@ -173,7 +167,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Image Upload Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 relative">
