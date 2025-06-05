@@ -1,45 +1,79 @@
 "use client"
 
 import type React from "react"
-
-import Footer from "@/components/footer"
-import Header from "@/components/header"
-import ProductCarousel from "@/components/product-carousel"
-import StarRating from "@/components/star-rating"
-import { Product, loadProducts } from "@/data/products"
-import { Minus, Plus, ShoppingCart } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { useParams } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { Minus, Plus, ShoppingCart } from "lucide-react"
 
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import StarRating from "@/components/star-rating"
+import ProductCarousel from "@/components/product-carousel"
+import { Product, loadProducts } from "@/data/products"
+import { loadProductId } from "@/app/actions/productId"
 
 export default function ProductPage() {
   const params = useParams()
   const productId = Number(params.id)
-  const [products, setProducts] = useState<Product[]>([]);
-  useEffect(() => {
-      async function fetchData() {
-        try {
-          const data = await loadProducts();
-          setProducts(data);
-        } catch (err) {
-          console.error("Erro ao carregar produtos", err);
-        }
-      }
-      fetchData();
-    }, []);
-  const product = products.find((p) => p.id === productId)
+
+  const [product, setProduct] = useState<Product | null>(null)
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [newPrice, setNewPrice] = useState("1")
 
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState("description")
 
-  // Image zoom functionality
   const [showZoom, setShowZoom] = useState(false)
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 })
   const imageContainerRef = useRef<HTMLDivElement>(null)
 
-  const relatedProducts = products.filter((p) => p.categoryId === product?.categoryId && p.id !== productId).slice(0, 5)
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!params.id) return;
+
+      const id = Number(params.id)
+
+      try {
+        const all = await loadProducts()
+        setAllProducts(all)
+
+        const found = all.find((p) => p.id === id)
+
+        if (found) {
+          setNewPrice("1")
+          setProduct(found)
+        } else {
+          const fetched = await loadProductId(id)
+          setNewPrice("2")
+          setProduct(fetched[0]) // loadProductId deve retornar array
+        }
+      } catch (error) {
+        console.error("Erro ao buscar produto", error)
+      }
+    }
+
+    fetchProduct()
+  }, [params.id])
+
+  const updateQuantity = (amount: number) => {
+    setQuantity((prev) => Math.max(1, prev + amount))
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!imageContainerRef.current) return
+
+    const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect()
+    const x = ((e.clientX - left) / width) * 100
+    const y = ((e.clientY - top) / height) * 100
+
+    setZoomPosition({ x, y })
+  }
+
+  const relatedProducts = allProducts
+    .filter((p) => p.categoryId === product?.categoryId && p.id !== productId)
+    .slice(0, 5)
 
   if (!product) {
     return (
@@ -57,22 +91,6 @@ export default function ProductPage() {
         <Footer />
       </div>
     )
-  }
-
-  const updateQuantity = (amount: number) => {
-    setQuantity((prev) => Math.max(1, prev + amount))
-  }
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!imageContainerRef.current) return
-
-    const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect()
-
-    // Calculate position as percentage
-    const x = ((e.clientX - left) / width) * 100
-    const y = ((e.clientY - top) / height) * 100
-
-    setZoomPosition({ x, y })
   }
 
   return (
@@ -129,9 +147,7 @@ export default function ProductPage() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Categoria</p>
-                    <p className="font-medium">
-                      {product.categoryId && products.find((p) => p.categoryId === product.categoryId)?.categoryId}
-                    </p>
+                    <p className="font-medium">{product.categoryId}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Peso</p>
@@ -144,8 +160,14 @@ export default function ProductPage() {
                 </div>
 
                 <div className="mb-6">
-                  <div className="text-sm text-gray-500 line-through">{product.originalPrice}</div>
-                  <div className="text-3xl font-bold text-green-600">{product.price}</div>
+                  {newPrice === "1" ? (
+                    <>
+                      <div className="text-sm text-gray-500 line-through">{product.originalPrice}</div>
+                      <div className="text-3xl font-bold text-green-600">{product.price}</div>
+                    </>
+                  ) : (
+                    <div className="text-3xl font-bold text-green-600">{product.originalPrice}</div>
+                  )}
                 </div>
 
                 <div className="flex items-center space-x-4 mb-6">
@@ -172,21 +194,19 @@ export default function ProductPage() {
           <div className="bg-white rounded-lg shadow-sm border mb-8">
             <div className="flex border-b">
               <button
-                className={`py-3 px-6 font-medium text-sm ${
-                  activeTab === "description"
+                className={`py-3 px-6 font-medium text-sm ${activeTab === "description"
                     ? "border-b-2 border-blue-500 text-blue-500"
                     : "text-gray-500 hover:text-gray-700"
-                }`}
+                  }`}
                 onClick={() => setActiveTab("description")}
               >
                 Descrição
               </button>
               <button
-                className={`py-3 px-6 font-medium text-sm ${
-                  activeTab === "info"
+                className={`py-3 px-6 font-medium text-sm ${activeTab === "info"
                     ? "border-b-2 border-blue-500 text-blue-500"
                     : "text-gray-500 hover:text-gray-700"
-                }`}
+                  }`}
                 onClick={() => setActiveTab("info")}
               >
                 Informações

@@ -2,13 +2,13 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { analyzeImage } from "@/app/actions/analyze-image"
+import CategoryDropdown from "@/components/category-dropdown"
+import { categories, Product, ProductResponse } from "@/data/products"
+import { Camera, Loader2, Search, ShoppingCart, Upload, User, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Search, ShoppingCart, User, Camera, X, Upload, Loader2 } from "lucide-react"
-import CategoryDropdown from "@/components/category-dropdown"
-import { categories } from "@/data/products"
-import { analyzeImage } from "@/app/actions/analyze-image"
+import { useRef, useState } from "react"
 
 export default function Header() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -18,7 +18,7 @@ export default function Header() {
   const [isDragging, setIsDragging] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [aiResponse, setAiResponse] = useState<string | null>(null)
-  const [searchResults, setSearchResults] = useState<any[] | null>(null)
+  const [searchResults, setSearchResults] = useState<ProductResponse | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,8 +76,9 @@ export default function Header() {
       const response = await analyzeImage(formData)
 
       if (response.success) {
-        setAiResponse(response.analysis)
+        setAiResponse(response.analysis ?? null);
         setSearchResults(response.results)
+        console.log(response)
       } else {
         setAiResponse(response.message || "Não foi possível analisar a imagem. Por favor, tente novamente.")
       }
@@ -169,7 +170,7 @@ export default function Header() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 relative">
+          <div className="bg-white rounded-lg shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 relative">
             <button onClick={closeModal} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
               <X className="h-5 w-5" />
             </button>
@@ -211,11 +212,11 @@ export default function Header() {
                       <p className="text-sm text-gray-700">{aiResponse}</p>
                     </div>
 
-                    {searchResults && searchResults.length > 0 && (
+                    {searchResults && searchResults.data.length > 0 && (
                       <div>
                         <h4 className="font-medium text-gray-800 mb-3">Produtos encontrados</h4>
                         <div className="grid grid-cols-3 gap-3">
-                          {searchResults.map((product) => (
+                          {searchResults.data.map((product) => (
                             <Link
                               href={`/product/${product.id}`}
                               key={product.id}
@@ -224,14 +225,14 @@ export default function Header() {
                             >
                               <div className="relative w-full h-20 mb-1">
                                 <Image
-                                  src={product.image || "/placeholder.svg"}
-                                  alt={product.name}
+                                  src={`/db-images/${product.filename}` || "/placeholder.svg"}
+                                  alt={product.product_name}
                                   fill
                                   className="object-contain"
                                 />
                               </div>
-                              <p className="text-xs font-medium line-clamp-1">{product.name}</p>
-                              <p className="text-xs text-green-600">{product.price}</p>
+                              <p className="text-xs font-medium line-clamp-1">{product.product_name}</p>
+                              <p className="text-xs text-green-600">{`R$${product.price}`}</p>
                             </Link>
                           ))}
                         </div>

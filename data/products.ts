@@ -24,6 +24,9 @@ export type Product = {
   packagingInfo: string;
 
 };
+export type ProductResponse = {
+  data: Product[];
+};
 export type ProductApi = {
   id: number;
   barcode: string;

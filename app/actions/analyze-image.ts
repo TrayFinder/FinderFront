@@ -27,7 +27,7 @@ export async function analyzeImage(formData: FormData) {
     return {
       success: true,
       results: data,
-      analysis: 'This appears to be a packaged food product with nutritional content.',
+      analysis: 'Produtos encontrados.',
     }
   } catch (error: any) {
     console.error("Error analyzing image:", error?.response || error)
