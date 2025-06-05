@@ -91,12 +91,12 @@ export async function loadProducts(): Promise<Product[]> {
 }
 
 export const brands = [
-  { id: 1, name: "Coca-Cola", image: "/coca.svg?height=100&width=100&text=Coca-Cola" },
-  { id: 2, name: "Nestlé", image: "/coca.svg?height=100&width=100&text=Nestlé" },
-  { id: 3, name: "Unilever", image: "/coca.svg?height=100&width=100&text=Unilever" },
-  { id: 4, name: "Heinz", image: "/coca.svg?height=100&width=100&text=Heinz" },
-  { id: 5, name: "Kellogg's", image: "/coca.svg?height=100&width=100&text=Kellogg's" },
-  { id: 6, name: "Danone", image: "/coca.svg?height=100&width=100&text=Danone" },
-  { id: 7, name: "Pepsi", image: "/coca.svg?height=100&width=100&text=Pepsi" },
-  { id: 8, name: "Kraft", image: "/coca.svg?height=100&width=100&text=Kraft" },
+  { id: 1, name: "Coca-Cola", image: "/Coca.svg?height=100&width=100&text=Coca-Cola" },
+  { id: 2, name: "Nestlé", image: "/Coca.svg?height=100&width=100&text=Nestlé" },
+  { id: 3, name: "Unilever", image: "/Coca.svg?height=100&width=100&text=Unilever" },
+  { id: 4, name: "Heinz", image: "/Coca.svg?height=100&width=100&text=Heinz" },
+  { id: 5, name: "Kellogg's", image: "/Coca.svg?height=100&width=100&text=Kellogg's" },
+  { id: 6, name: "Danone", image: "/Coca.svg?height=100&width=100&text=Danone" },
+  { id: 7, name: "Pepsi", image: "/Coca.svg?height=100&width=100&text=Pepsi" },
+  { id: 8, name: "Kraft", image: "/Coca.svg?height=100&width=100&text=Kraft" },
 ]
